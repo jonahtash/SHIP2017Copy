@@ -79,3 +79,13 @@ BEGIN
     SET query = concat('%',query,'%');
 	SELECT * FROM testdata WHERE (snippet LIKE query ESCAPE '\\') OR (title LIKE query ESCAPE '\\') ;
 END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `expert_autocomplete`(IN query TEXT)
+BEGIN
+	SET query = replace(query,'%','\\%');
+    SET query = replace(query,'\\','\\\\');
+    SET query = replace(query,'_','\\_');
+    SET query = replace(query,'[','\\[');
+    SET query = concat(query,"%");
+	SELECT * FROM expert WHERE (snippet LIKE query ESCAPE '\\') OR (snippet LIKE concat('% ',query) ESCAPE '\\');
+END
