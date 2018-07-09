@@ -1,0 +1,81 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_expert_15`(IN a TEXT, b TEXT, c TEXT,  d TEXT,  e TEXT,  f TEXT,  g TEXT,  h TEXT,  i TEXT,  j TEXT,  k TEXT,  l TEXT,  m TEXT,  n TEXT,  o TEXT)
+BEGIN
+    SET a = concat('%',a,'%');
+    SET b = concat('%',b,'%');
+    SET c = concat('%',c,'%');
+    SET d = concat('%',d,'%');
+    SET e = concat('%',e,'%');
+    SET f = concat('%',f,'%');
+    SET g = concat('%',g,'%');
+    SET h = concat('%',h,'%');
+	SET i = concat('%',i,'%');
+    SET j = concat('%',j,'%');
+    SET k = concat('%',k,'%');
+    SET l = concat('%',l,'%');
+    SET m = concat('%',m,'%');
+    SET n = concat('%',n,'%');
+    SET o = concat('%',o,'%');
+	SELECT * FROM expert WHERE ((snippet LIKE a) OR (abstract LIKE a)) AND ((snippet LIKE b) OR (abstract LIKE b)) AND ((snippet LIKE c) OR (abstract LIKE c)) AND ((snippet LIKE d) OR (abstract LIKE d)) AND ((snippet LIKE e) OR (abstract LIKE e)) AND ((snippet LIKE f) OR (abstract LIKE f)) AND ((snippet LIKE g) OR (abstract LIKE g)) AND ((snippet LIKE h) OR (abstract LIKE h)) AND ((snippet LIKE i) OR (abstract LIKE i)) AND ((snippet LIKE j) OR (abstract LIKE j)) AND ((snippet LIKE k) OR (abstract LIKE k)) AND ((snippet LIKE l) OR (abstract LIKE l)) AND ((snippet LIKE m) OR (abstract LIKE m)) AND ((snippet LIKE n) OR (abstract LIKE n)) AND ((snippet LIKE o) OR (abstract LIKE o));
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_keyword_formatted`(IN query TEXT)
+BEGIN
+	DECLARE spaces INTEGER;
+    SET query = replace(query,'%','\\%');
+    SET query = replace(query,'\\','\\\\');
+    SET query = replace(query,'_','\\_');
+    SET query = replace(query,'[','\\[');
+    #SET query = replace(query,' ',' +');
+	#SELECT * FROM testdata WHERE (snippet LIKE query ESCAPE '\\') OR (title LIKE query ESCAPE '\\') ;
+    SELECT * FROM testdata WHERE MATCH(title,snippet) against(query IN natural language mode);
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_autocomplete_big`(IN query TEXT)
+BEGIN
+	SET query = replace(query,'%','\\%');
+    SET query = replace(query,'\\','\\\\');
+    SET query = replace(query,'_','\\_');
+    SET query = replace(query,'[','\\[');
+    SET query = concat(query,"%");
+	SELECT * FROM testdata_big WHERE (title LIKE query ESCAPE '\\') OR (title LIKE concat('% ',query) ESCAPE '\\');
+ENDs
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_autocomplete`(IN query TEXT)
+BEGIN
+	SET query = replace(query,'%','\\%');
+    SET query = replace(query,'\\','\\\\');
+    SET query = replace(query,'_','\\_');
+    SET query = replace(query,'[','\\[');
+    SET query = concat(query,"%");
+	SELECT * FROM testdata WHERE (title LIKE query ESCAPE '\\') OR (title LIKE concat('% ',query) ESCAPE '\\');
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_15`(IN a TEXT, b TEXT, c TEXT,  d TEXT,  e TEXT,  f TEXT,  g TEXT,  h TEXT,  i TEXT,  j TEXT,  k TEXT,  l TEXT,  m TEXT,  n TEXT,  o TEXT)
+BEGIN
+    SET a = concat('%',a,'%');
+    SET b = concat('%',b,'%');
+    SET c = concat('%',c,'%');
+    SET d = concat('%',d,'%');
+    SET e = concat('%',e,'%');
+    SET f = concat('%',f,'%');
+    SET g = concat('%',g,'%');
+    SET h = concat('%',h,'%');
+	SET i = concat('%',i,'%');
+    SET j = concat('%',j,'%');
+    SET k = concat('%',k,'%');
+    SET l = concat('%',l,'%');
+    SET m = concat('%',m,'%');
+    SET n = concat('%',n,'%');
+    SET o = concat('%',o,'%');
+	SELECT * FROM testdata_big WHERE ((snippet LIKE a) OR (title LIKE a)) AND ((snippet LIKE b) OR (title LIKE b)) AND ((snippet LIKE c) OR (title LIKE c)) AND ((snippet LIKE d) OR (title LIKE d)) AND ((snippet LIKE e) OR (title LIKE e)) AND ((snippet LIKE f) OR (title LIKE f)) AND ((snippet LIKE g) OR (title LIKE g)) AND ((snippet LIKE h) OR (title LIKE h)) AND ((snippet LIKE i) OR (title LIKE i)) AND ((snippet LIKE j) OR (title LIKE j)) AND ((snippet LIKE k) OR (title LIKE k)) AND ((snippet LIKE l) OR (title LIKE l)) AND ((snippet LIKE m) OR (title LIKE m)) AND ((snippet LIKE n) OR (title LIKE n)) AND ((snippet LIKE o) OR (title LIKE o));
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search`(IN query TEXT)
+BEGIN
+	SET query = replace(query,'%','\\%');
+    SET query = replace(query,'\\','\\\\');
+    SET query = replace(query,'_','\\_');
+    SET query = replace(query,'[','\\[');
+    SET query = concat('%',query,'%');
+	SELECT * FROM testdata WHERE (snippet LIKE query ESCAPE '\\') OR (title LIKE query ESCAPE '\\') ;
+END
